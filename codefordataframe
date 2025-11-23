@@ -1,0 +1,47 @@
+import pandas as pd
+url = 'https://raw.githubusercontent.com/MarcyBarbosa/pandadataframepractice/refs/heads/main/Jogadores.csv'
+df = pd.read_csv(url, sep = ";", na_values = ["null"])
+
+# - 1:
+maior_salario = df["salario_do_jogador"] > 20000
+salario_jogadores = df.loc[maior_salario, ["nome_do_jogador", "nome_time_jogador"]]
+print("Nome e time dos jogadores com salário acima de 20.000:\n")
+print(salario_jogadores)
+
+# - 2:
+times_MG = df["nome_time_jogador"] == "Minas Gerais"
+times_pedidos = df.loc[times_MG,["nome_do_jogador", "salario_do_jogador"]]
+print("\nNome e salário dos jogadores de times de Minas Gerais\n")
+print(times_pedidos)
+
+# - 3:
+nomes_com_u = df["nome_do_jogador"].str.contains("u", case=False, na=False)
+nomes_pedidos = df.loc[nomes_com_u, ["nome_do_jogador", "nome_time_jogador"]]
+
+print("\nNome e time dos jogadores com 'u' no nome:")
+print(nomes_pedidos)
+
+# - 4:
+salario_ordenado = df.sort_values("salario_do_jogador", ascending=False)
+salario_decrescente = salario_ordenado[["nome_do_jogador","nome_time_jogador","salario_do_jogador"]]
+
+print("\nNome, salário e time ordenados pelo salário em ordem decrescente.")
+print(salario_decrescente)
+
+# - 5:
+ordenado_time_salario = df.sort_values(by=["nome_time_jogador", "salario_do_jogador"], ascending=[True, False])
+timeaz_salariodescrescente = ordenado_time_salario[["nome_do_jogador", "nome_time_jogador", "salario_do_jogador"]]
+
+print("\nNome, salário e time ordenados por time crescente e salário decrescente.")
+print(timeaz_salariodescrescente)
+
+# - 6:
+jogadores_time = df.groupby("nome_time_jogador")["nome_do_jogador"].count()
+print("\nQuantidade de jogadores por time:")
+
+print(jogadores_time)
+
+# - 7:
+media_salario = df.groupby("nome_time_jogador")["salario_do_jogador"].mean()
+print("\nMédia salarial por time:")
+print(media_salario)
